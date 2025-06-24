@@ -344,6 +344,14 @@ static int cpu_boost_init(void)
 		s = &per_cpu(sync_info, cpu);
 		s->cpu = cpu;
 	}
+
+        for_each_possible_cpu(cpu) {
+                s = &per_cpu(sync_info, cpu);
+                if (cpu <= 3)
+                        s->input_boost_freq = 979200;
+                else if (cpu <= 7)
+                        s->input_boost_freq = 1363200;
+        }
 	cpufreq_register_notifier(&boost_adjust_nb, CPUFREQ_POLICY_NOTIFIER);
 
 	cpu_boost_kobj = kobject_create_and_add("cpu_boost",
